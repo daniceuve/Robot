@@ -19,12 +19,12 @@ public record Zona(int ancho, int alto) {
     }
 
     public void validarAncho(int ancho) {
-        if (ancho < ANCHO_MINIMO || ancho >= ANCHO_MAXIMO)
-            throw new IllegalArgumentException("El ancho no puede ser menor al mínimo permitido");
+        if (ancho < ANCHO_MINIMO || ancho > ANCHO_MAXIMO)
+            throw new IllegalArgumentException("Ancho no válido.");
     }
     public void validarAlto(int alto) {
-        if (alto < ALTO_MINIMO || alto >= ALTO_MAXIMO )
-            throw new IllegalArgumentException("El alto no puede ser menor al mínimo permitido");
+        if (alto < ALTO_MINIMO || alto > ALTO_MAXIMO )
+            throw new IllegalArgumentException("Alto no válido.");
     }
 
     public Coordenada getCentro() {
