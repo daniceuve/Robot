@@ -1,5 +1,6 @@
 package org.iesalandalus.programacion.robot.modelo;
 
+import javax.naming.OperationNotSupportedException;
 import java.util.Objects;
 
 public class Robot {
@@ -15,46 +16,47 @@ public class Robot {
 
     public Robot(Zona zona) {
         this();
-        this.zona = zona;
+        this.zona = Objects.requireNonNull(zona, "La zona no puede ser nula.");
         this.coordenada = zona.getCentro();
     }
 
     public Robot(Zona zona, Orientacion orientacion) {
-        this.zona = zona;
-        this.orientacion = orientacion;
+        this(zona);
+        this.orientacion = Objects.requireNonNull(orientacion, "La orientación no puede ser nula.");
         this.coordenada = zona.getCentro();
     }
     public Robot(Zona zona, Orientacion orientacion, Coordenada coordenada) {
-        this.zona = zona;
-        this.orientacion = orientacion;
-        this.coordenada = coordenada;
+        this(zona, orientacion);
+        this.coordenada = Objects.requireNonNull(coordenada, "La coordenada no puede ser nula.");
+        if (!zona.pertenece(coordenada))
+            throw new IllegalArgumentException("La coordenada no pertenece a la zona.");
+
     }
 
     public Robot(Robot robot) {
-        this(robot.zona, robot.orientacion, robot.coordenada);
+        if (robot == null)
+            throw new NullPointerException("El robot no puede ser nulo.");
+        this.zona = new Zona();
+        this.orientacion = robot.orientacion;
+        this.coordenada = new Coordenada(robot.coordenada.x(), robot.coordenada.y());
     }
 
     public Zona getZona() {
         return zona;
     }
     private void setZona(Zona zona) {
-        if (zona == null) {
+        if (zona == null)
             throw new NullPointerException("El valor no puede ser nulo");
-        }
-
         this.zona = zona;
-
     }
     public Coordenada getCoordenada() {
         return coordenada;
     }
     private void setCoordenada(Coordenada coordenada) {
-        if (!zona.pertenece(coordenada)) {
+        if (!zona.pertenece(coordenada))
             throw new IllegalArgumentException("No puedes salirte de los límites.");
-        }
-        if (coordenada == null) {
+        if (coordenada == null)
             throw new NullPointerException("El valor no puede ser nulo");
-        }
 
         this.coordenada = coordenada;
     }
@@ -62,16 +64,20 @@ public class Robot {
         return orientacion;
     }
 
-    public void avanzar() {
-        switch (getOrientacion()) {
-            case NORTE -> setCoordenada(new Coordenada(coordenada.x(), coordenada.y() + 1));
-            case NORESTE -> setCoordenada(new Coordenada(coordenada.x() + 1, coordenada.y() + 1));
-            case ESTE -> setCoordenada(new Coordenada(coordenada.x() + 1, coordenada.y()));
-            case SURESTE -> setCoordenada(new Coordenada(coordenada.x() + 1, coordenada.y() - 1));
-            case SUR -> setCoordenada(new Coordenada(coordenada.x(), coordenada.y() - 1));
-            case SUROESTE -> setCoordenada(new Coordenada(coordenada.x() - 1, coordenada.y()));
-            case OESTE -> setCoordenada(new Coordenada(coordenada.x() - 1, coordenada.y() - 1));
-            case NOROESTE -> setCoordenada(new Coordenada(coordenada.x() - 1, coordenada.y() + 1));
+    public void avanzar() throws OperationNotSupportedException{
+        try {
+            switch (getOrientacion()) {
+                case NORTE -> setCoordenada(new Coordenada(coordenada.x(), coordenada.y() + 1));
+                case NORESTE -> setCoordenada(new Coordenada(coordenada.x() + 1, coordenada.y() + 1));
+                case ESTE -> setCoordenada(new Coordenada(coordenada.x() + 1, coordenada.y()));
+                case SURESTE -> setCoordenada(new Coordenada(coordenada.x() + 1, coordenada.y() - 1));
+                case SUR -> setCoordenada(new Coordenada(coordenada.x(), coordenada.y() - 1));
+                case SUROESTE -> setCoordenada(new Coordenada(coordenada.x() - 1, coordenada.y() - 1));
+                case OESTE -> setCoordenada(new Coordenada(coordenada.x() - 1, coordenada.y()));
+                case NOROESTE -> setCoordenada(new Coordenada(coordenada.x() - 1, coordenada.y() + 1));
+            }
+        } catch (IllegalArgumentException e) {
+            throw new OperationNotSupportedException("No se puede avanzar, ya que se sale de la zona.");
         }
     }
     public void girarALaDerecha() {
