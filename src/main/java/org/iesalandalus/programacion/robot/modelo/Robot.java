@@ -39,7 +39,7 @@ public class Robot {
     }
     private void setZona(Zona zona) {
         if (zona == null) {
-            throw new IllegalArgumentException("El valor no puede ser nulo");
+            throw new NullPointerException("El valor no puede ser nulo");
         }
 
         this.zona = zona;
@@ -52,6 +52,10 @@ public class Robot {
         if (!zona.pertenece(coordenada)) {
             throw new IllegalArgumentException("No puedes salirte de los límites.");
         }
+        if (coordenada == null) {
+            throw new NullPointerException("El valor no puede ser nulo");
+        }
+
         this.coordenada = coordenada;
     }
     public Orientacion getOrientacion() {
