@@ -13,13 +13,11 @@ public class Robot {
         coordenada = zona.getCentro();
         orientacion = Orientacion.NORTE;
     }
-
     public Robot(Zona zona) {
         this();
         this.zona = Objects.requireNonNull(zona, "La zona no puede ser nula.");
         this.coordenada = zona.getCentro();
     }
-
     public Robot(Zona zona, Orientacion orientacion) {
         this(zona);
         this.orientacion = Objects.requireNonNull(orientacion, "La orientación no puede ser nula.");
@@ -30,17 +28,14 @@ public class Robot {
         this.coordenada = Objects.requireNonNull(coordenada, "La coordenada no puede ser nula.");
         if (!zona.pertenece(coordenada))
             throw new IllegalArgumentException("La coordenada no pertenece a la zona.");
-
     }
-
     public Robot(Robot robot) {
         if (robot == null)
             throw new NullPointerException("El robot no puede ser nulo.");
         this.zona = new Zona();
         this.orientacion = robot.orientacion;
-        this.coordenada = new Coordenada(robot.coordenada.x(), robot.coordenada.y());
+        this.coordenada = robot.coordenada;
     }
-
     public Zona getZona() {
         return zona;
     }
@@ -57,13 +52,11 @@ public class Robot {
             throw new IllegalArgumentException("No puedes salirte de los límites.");
         if (coordenada == null)
             throw new NullPointerException("El valor no puede ser nulo");
-
         this.coordenada = coordenada;
     }
     public Orientacion getOrientacion() {
         return orientacion;
     }
-
     public void avanzar() throws OperationNotSupportedException{
         try {
             switch (getOrientacion()) {
@@ -104,19 +97,16 @@ public class Robot {
             case NOROESTE -> Orientacion.OESTE;
         };
     }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Robot robot)) return false;
         return Objects.equals(coordenada, robot.coordenada) && orientacion == robot.orientacion && Objects.equals(zona, robot.zona);
     }
-
     @Override
     public int hashCode() {
         return Objects.hash(coordenada, orientacion, zona);
     }
-
     @Override
     public String toString() {
         return "Robot{" +

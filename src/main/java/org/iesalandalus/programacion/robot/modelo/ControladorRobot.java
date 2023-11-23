@@ -8,7 +8,7 @@ public class ControladorRobot {
     private Robot robot;
 
     public ControladorRobot(Robot robot) {
-        this.robot = Objects.requireNonNull(robot, "El robot no puede ser nulo.");
+        this.robot = new Robot(Objects.requireNonNull(robot, "El robot no puede ser nulo."));
     }
 
     public Robot getRobot() {
