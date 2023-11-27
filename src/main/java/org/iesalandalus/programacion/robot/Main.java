@@ -7,60 +7,50 @@ import javax.naming.OperationNotSupportedException;
 
 public class Main {
 
-    private ControladorRobot controladorRobot;
+    private static  ControladorRobot controladorRobot;
 
     public static void main(String[] args) {
-        Main programa = new Main();
         int opcion;
         do {
             Consola.mostrarMenuPrincipal();
             opcion = Consola.elegirOpcion();
-            programa.ejecutarOpcion(opcion);
-        } while (true);
+            ejecutarOpcion(opcion);
+            Consola.mostrarRobot(controladorRobot);
+        } while (opcion != 6);
     }
 
-    private void ejecutarOpcion(int opcion) {
+    private static void ejecutarOpcion(int opcion) {
         switch (opcion) {
             case 1 -> controlarRobotDefecto();
             case 2 -> controlarRobotZona();
             case 3 -> controlarRobotZonaOrientacion();
             case 4 -> controlarRobotZonaOrientacionCoordenada();
-            case 5 -> {
-                if (controladorRobot == null) {
-                    System.out.println("Primero debes crear un robot");
-                } else {
-                    ejecutarComando();
-                    Consola.mostrarRobot(controladorRobot.getRobot());
-                }
-            }
+            case 5 -> ejecutarComando();
             case 6 -> Consola.despedirse();
             default -> System.out.println("Opción no válida.");
         }
     }
 
-    private void controlarRobotDefecto() {
+    private static void controlarRobotDefecto() {
         controladorRobot = new ControladorRobot(new Robot());
     }
 
-    private void controlarRobotZona() {
+    private static void controlarRobotZona() {
         Zona zona = Consola.elegirZona();
         controladorRobot = new ControladorRobot(new Robot(zona));
     }
-
-    private void controlarRobotZonaOrientacion() {
+    private static void controlarRobotZonaOrientacion() {
         Zona zona = Consola.elegirZona();
         Orientacion orientacion = Consola.elegirOrientacion();
         controladorRobot = new ControladorRobot(new Robot(zona, orientacion));
     }
-
-    private void controlarRobotZonaOrientacionCoordenada() {
+    private static void controlarRobotZonaOrientacionCoordenada() {
         Zona zona = Consola.elegirZona();
         Orientacion orientacion = Consola.elegirOrientacion();
         Coordenada coordenada = Consola.elegirCoordenada();
         controladorRobot = new ControladorRobot(new Robot(zona, orientacion, coordenada));
     }
-
-    private void ejecutarComando() {
+    private static void ejecutarComando() {
         char comando = Consola.elegirComando();
         try {
             controladorRobot.ejecutar(comando);

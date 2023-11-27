@@ -6,8 +6,12 @@ import java.util.Arrays;
 import java.util.InputMismatchException;
 import org.iesalandalus.programacion.utilidades.Entrada;
 
+import javax.naming.ldap.Control;
+
 
 public class Consola {
+
+    private static ControladorRobot controladorRobot;
 
     private Consola() {
 
@@ -78,21 +82,22 @@ public class Consola {
     }
 
     public static char elegirComando() {
-        System.out.print("Elige el comando a ejecutar (A/D/I): ");
+        if (controladorRobot == null) {
+            throw new NullPointerException("Primero tienes que crear un robot.");
+        } else System.out.print("Elige el comando a ejecutar (A/D/I): ");
         return Entrada.caracter();
     }
 
-    public static void mostrarRobot(Robot robot) {
-        if (robot != null) {
+    public static void mostrarRobot(ControladorRobot controladorRobot) {
+        if (controladorRobot != null) {
             System.out.println("Información del Robot:");
-            System.out.println(robot);
+            System.out.println(controladorRobot.getRobot());
         } else
-            System.out.println("El robot es nulo.");
+            throw new NullPointerException("El robot es nulo.");
 
     }
 
     public static void despedirse() {
         System.out.println("¡Hasta luego! Gracias por usar nuestra aplicación.");
-        System.exit(0);
     }
 }
