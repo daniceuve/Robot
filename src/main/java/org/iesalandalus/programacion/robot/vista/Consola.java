@@ -1,23 +1,19 @@
 package org.iesalandalus.programacion.robot.vista;
 
 import org.iesalandalus.programacion.robot.modelo.*;
+
+import java.util.Arrays;
+import java.util.InputMismatchException;
 import org.iesalandalus.programacion.utilidades.Entrada;
+
 
 public class Consola {
 
-    private ControladorRobot controladorRobot;
-    private Orientacion orientacion;
-    private Coordenada coordenada;
-    private Zona zona;
-    private Robot robot;
-
     private Consola() {
-
-        robot = new Robot();
 
     }
 
-    public void mostrarMenuPrincipal() {
+    public static void mostrarMenuPrincipal() {
         System.out.println("-------------------------------Menú-------------------------------");
         System.out.println("Elija entre las siguientes ópciones: ");
         System.out.println("1 - Controlar un robot por defecto");
@@ -29,26 +25,74 @@ public class Consola {
         System.out.println("------------------------------------------------------------------");
     }
 
-    public int elegitOpcion() {
-
-        mostrarMenuPrincipal();
-
-        int opcion;
+    public static int elegirOpcion() {
+        int opcion = 0;
         do {
-            System.out.print("\nOpción: ");
-            opcion = Entrada.entero();
-        } while (opcion <= 0 || opcion > 6);
-
+            try {
+                System.out.print("Elige una opción del menú: ");
+                opcion = Entrada.entero();
+            } catch (InputMismatchException e) {
+                System.out.println("Opción no válida." + e.getMessage());
+            }
+        } while (opcion < 1 || opcion > 6);
         return opcion;
     }
 
-    public Zona elegirZona() {
+    public static Zona elegirZona() {
+        int ancho, alto;
+        do {
+            System.out.print("Introduce el ancho de la zona: ");
+            ancho = Entrada.entero();
+            System.out.print("Introduce el alto de la zona: ");
+            alto = Entrada.entero();
+        } while (ancho < Zona.ANCHO_MINIMO || ancho > Zona.ANCHO_MAXIMO ||
+                alto < Zona.ALTO_MINIMO || alto > Zona.ALTO_MAXIMO);
+        return new Zona(ancho, alto);
+    }
 
+    public static void mostrarMenuOrientacion() {
+        System.out.println("Menú de Orientaciones:");
+        System.out.println(Arrays.toString(Orientacion.values()));
+    }
 
+    public static Orientacion elegirOrientacion() {
+        int opcion = 0;
+        do {
+            mostrarMenuOrientacion();
+            try {
+                System.out.print("Elige una orientación del menú: ");
+                opcion = Entrada.entero();
+            } catch (InputMismatchException e) {
+                System.out.println("Opción no válida. Debe ser un número.");
+            }
+        } while (opcion < 1 || opcion > 8);
+        return Orientacion.values()[opcion];
+    }
+
+    public static Coordenada elegirCoordenada() {
+        System.out.print("Introduce la coordenada X: ");
+        int x = Entrada.entero();
+        System.out.print("Introduce la coordenada Y: ");
+        int y = Entrada.entero();
+        return new Coordenada(x, y);
+    }
+
+    public static char elegirComando() {
+        System.out.print("Elige el comando a ejecutar (A/D/I): ");
+        return Entrada.caracter();
+    }
+
+    public static void mostrarRobot(Robot robot) {
+        if (robot != null) {
+            System.out.println("Información del Robot:");
+            System.out.println(robot);
+        } else
+            System.out.println("El robot es nulo.");
 
     }
 
-
-
-
+    public static void despedirse() {
+        System.out.println("¡Hasta luego! Gracias por usar nuestra aplicación.");
+        System.exit(0);
+    }
 }
