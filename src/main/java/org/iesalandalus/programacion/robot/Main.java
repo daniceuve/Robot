@@ -37,18 +37,18 @@ public class Main {
 
     private static void controlarRobotZona() {
         Zona zona = Consola.elegirZona();
-        controladorRobot = new ControladorRobot(new Robot(zona));
+        controladorRobot = new ControladorRobot(new Robot(Consola.elegirZona()));
     }
     private static void controlarRobotZonaOrientacion() {
         Zona zona = Consola.elegirZona();
         Orientacion orientacion = Consola.elegirOrientacion();
-        controladorRobot = new ControladorRobot(new Robot(zona, orientacion));
+        controladorRobot = new ControladorRobot(new Robot(Consola.elegirZona(), Consola.elegirOrientacion()));
     }
     private static void controlarRobotZonaOrientacionCoordenada() {
         Zona zona = Consola.elegirZona();
         Orientacion orientacion = Consola.elegirOrientacion();
         Coordenada coordenada = Consola.elegirCoordenada();
-        controladorRobot = new ControladorRobot(new Robot(zona, orientacion, coordenada));
+        controladorRobot = new ControladorRobot(new Robot(Consola.elegirZona(), Consola.elegirOrientacion(), Consola.elegirCoordenada()));
     }
     private static void ejecutarComando() {
         char comando = Consola.elegirComando();

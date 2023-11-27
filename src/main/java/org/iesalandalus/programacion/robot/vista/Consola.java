@@ -98,6 +98,6 @@ public class Consola {
     }
 
     public static void despedirse() {
-        System.out.println("¡Hasta luego! Gracias por usar nuestra aplicación.");
+        System.out.println("Ta luego");
     }
 }
