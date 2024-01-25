@@ -1,6 +1,7 @@
 package org.iesalandalus.programacion.robot.modelo;
 
 import java.util.Objects;
+import java.util.Random;
 
 public record Zona(int ancho, int alto) {
 
@@ -8,10 +9,17 @@ public record Zona(int ancho, int alto) {
     public static final int ANCHO_MAXIMO = 100;
     public static final int ALTO_MINIMO = 10;
     public static final int ALTO_MAXIMO = 100;
+    public static final int NUMERO_MINIMO_OBSTACULOS = 4;
+    public static final int NUMERO_MAXIMO_OBSTACULOS = 24;
+    private static char[][] obstaculos;
+    private static Random obstaculosRandom;
 
     public Zona {
         validarAlto(alto);
         validarAncho(ancho);
+        obstaculosRandom = new Random();
+        obstaculos = new char[NUMERO_MAXIMO_OBSTACULOS][NUMERO_MAXIMO_OBSTACULOS];
+        for ()
     }
     public Zona() {
         this(ANCHO_MINIMO, ALTO_MINIMO);
@@ -31,6 +39,7 @@ public record Zona(int ancho, int alto) {
         Objects.requireNonNull(coordenada, "La coordenada no puede ser nula.");
         return perteneceX(coordenada.x()) && perteneceY(coordenada.y());
     }
+
     private boolean perteneceX(int x) {
         return (x >= 0 && x < ancho);
     }
